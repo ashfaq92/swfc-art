@@ -23,7 +23,7 @@ This is maven project and we recommend to use IntelliJ IDEA for smooth experienc
 
 `1.` Facing import error: 
 
-`Solution:` Set the source directories, i.e., `hnswlib-examples > hnswlib-examples-java > src > main > java` ([navigate](https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-utils/src/main/java)) and  `hnswlib-core > src > main > java` ([navigate](https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-core/src/main/java)) by selecting the directory in the Project window, right clicking and selecting `Mark Directory As > Sources Root`, as shown in following images: ([details](https://stackoverflow.com/questions/33531334/convert-directories-with-java-files-to-java-modules-in-intellij) )
+`Solution:` Set the source directories, i.e., [`hnswlib-examples > hnswlib-examples-java > src > main > java`](www.bing.com) ([navigate](https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-utils/src/main/java)) and  `hnswlib-core > src > main > java` ([navigate](https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-core/src/main/java)) by selecting the directory in the Project window, right clicking and selecting `Mark Directory As > Sources Root`, as shown in following images: ([details](https://stackoverflow.com/questions/33531334/convert-directories-with-java-files-to-java-modules-in-intellij) )
 ![marking hnswlib-core directory as sources root](https://github.com/ashfaq92/swfc-art/blob/main/source-root-hnswlib-core.jpg "Hnswlib Core")
 ![marking hnswlib-examples directory as sources root](https://github.com/ashfaq92/swfc-art/blob/main/source-root-hnswlib-examples.jpg "Hnswlib Examples")
 
