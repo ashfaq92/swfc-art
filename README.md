@@ -29,7 +29,7 @@ This is maven project and we recommend to use IntelliJ IDEA for smooth experienc
 
 `2.` Cant resolve maven dependencies:
 
-`Solution:` [Clean od maven dependencies](https://stackoverflow.com/a/19312292)
+`Solution:` [Clean old maven dependencies](https://stackoverflow.com/a/19312292)
 
 `3. Exception in thread "main" java.io.IOException: The system cannot find the path specified`
 
