@@ -23,7 +23,7 @@ This is maven project and we recommend to use IntelliJ IDEA for smooth experienc
 
 `1.` Facing import error: 
 
-`Solution:` Set the source directories, i.e., [`hnswlib-examples > hnswlib-examples-java > src > main > java`] (https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-utils/src/main/java) and  [`hnswlib-core > src > main > java`] (https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-core/src/main/java) by selecting the directory in the Project window, right clicking and selecting `Mark Directory As > Sources Root`, as shown in following images: ([details](https://stackoverflow.com/questions/33531334/convert-directories-with-java-files-to-java-modules-in-intellij))
+`Solution:` Set the source directories, i.e., [`hnswlib-examples > hnswlib-examples-java > src > main > java`](https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-utils/src/main/java) and  [`hnswlib-core > src > main > java`](https://github.com/ashfaq92/swfc-art/tree/main/hnswlib-core/src/main/java) by selecting the directory in the Project window, right clicking and selecting `Mark Directory As > Sources Root`, as shown in following images: ([details](https://stackoverflow.com/questions/33531334/convert-directories-with-java-files-to-java-modules-in-intellij))
 ![marking hnswlib-core directory as sources root](https://github.com/ashfaq92/swfc-art/blob/main/source-root-hnswlib-core.jpg "Hnswlib Core")
 ![marking hnswlib-examples directory as sources root](https://github.com/ashfaq92/swfc-art/blob/main/source-root-hnswlib-examples.jpg "Hnswlib Examples")
 
@@ -33,7 +33,7 @@ This is maven project and we recommend to use IntelliJ IDEA for smooth experienc
 
 `3. Exception in thread "main" java.io.IOException: The system cannot find the path specified`
 
-`Solution:` By default, test results are stored in `E:/temp/` directory. Please create `test` folder in `E` drive. OR Specify custom path for storing results [here]    (https://github.com/ashfaq92/swfc-art/blob/5b1d40cc123743d8ad8759808f5ed7d90dedb183/hnswlib-examples/hnswlib-examples-java/src/main/java/com/github/jelmerk/knn/examples/test/model/TestEffectiveness.java#L62) and [here] (https://github.com/ashfaq92/swfc-art/blob/5b1d40cc123743d8ad8759808f5ed7d90dedb183/hnswlib-examples/hnswlib-examples-java/src/main/java/com/github/jelmerk/knn/examples/test/model/TestEfficiency.java#L55)
+`Solution:` By default, test results are stored in `E:/temp/` directory. Please create `test` folder in `E` drive. OR Specify custom path for storing results [here](https://github.com/ashfaq92/swfc-art/blob/5b1d40cc123743d8ad8759808f5ed7d90dedb183/hnswlib-examples/hnswlib-examples-java/src/main/java/com/github/jelmerk/knn/examples/test/model/TestEffectiveness.java#L62) and [here](https://github.com/ashfaq92/swfc-art/blob/5b1d40cc123743d8ad8759808f5ed7d90dedb183/hnswlib-examples/hnswlib-examples-java/src/main/java/com/github/jelmerk/knn/examples/test/model/TestEfficiency.java#L55)
 
 `4.` Enable [auto import](https://blog.jetbrains.com/idea/2020/01/intellij-idea-2020-1-eap/#maven_and_gradle_importing_updates) maven plugins in IntellijIDEA.
 
