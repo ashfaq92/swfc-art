@@ -86,7 +86,6 @@ public class HnswIndex<TId, TVector, TItem extends Item<TId, TVector>, TDistance
         this.maxM = builder.m;
         this.maxM0 = builder.m * 2;
         this.levelLambda = 1 / Math.log(this.m);
-        // System.out.println(this.m+"\t"+Math.log(this.m)+"\t"+1/Math.log(this.m)+"\t"+this.levelLambda);
         this.efConstruction = Math.max(builder.efConstruction, m);
         this.ef = builder.ef;
         this.removeEnabled = builder.removeEnabled;
@@ -1016,7 +1015,6 @@ public class HnswIndex<TId, TVector, TItem extends Item<TId, TVector>, TDistance
         double random = Math.abs((double) Murmur3.hash32(bytes) / (double) Integer.MAX_VALUE);
 
         double r = -Math.log(random) * lambda;
-        // System.out.println(random+"\t"+r+"\t"+(int) r);
         return (int) r;
     }
 
@@ -1388,7 +1386,6 @@ public class HnswIndex<TId, TVector, TItem extends Item<TId, TVector>, TDistance
             super(distanceFunction, distanceComparator, maxItemCount);
 
             this.m = m;
-            // System.out.println(m);
             this.ef = ef;
             this.efConstruction = efConstruction;
             this.removeEnabled = removeEnabled;

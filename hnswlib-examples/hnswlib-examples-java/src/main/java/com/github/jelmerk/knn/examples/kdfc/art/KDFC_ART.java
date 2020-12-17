@@ -9,7 +9,10 @@ import com.github.jelmerk.knn.hnsw.HnswIndex;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Stack;
 
 // import org.omg.Messaging.SyncScopeHelper;
 
@@ -18,26 +21,17 @@ public class KDFC_ART {
     public Node root; // ���ڵ�
     public int size = 0; // Number of nodes in the tree
     public int candidateNum = 10; // ��ѡ��������
-    // public int[][] inputDomain; // ������Χ
-    public double[][] inputDomain; // ������Χ
+    public int[][] inputDomain; // ������Χ
 
     public KDFC_ART() {
 
     }
 
-    public KDFC_ART(double[][] bound) {
+    public KDFC_ART(int[][] bound) {
         super();
         root = new Node();
         inputDomain = bound;
     }
-
-    // public KDFC_ART(int[][] bound) {
-    //     super();
-    //     root = new Node();
-    //     inputDomain = bound;
-    // }
-
-
 
     public Stack<Node> getTreePath(Point p) { // ���p���ڸ����е�����·��
 
@@ -239,8 +233,8 @@ public class KDFC_ART {
             root.p = p;
             root.boundary = new float[p.n][2];
             for (int i = 0; i < p.n; i++) {
-                root.boundary[i][0] = (float) this.inputDomain[i][0];
-                root.boundary[i][1] = (float) this.inputDomain[i][1];
+                root.boundary[i][0] = this.inputDomain[i][0];
+                root.boundary[i][1] = this.inputDomain[i][1];
             }
             root.spilt = this.spiltSelect(root.boundary, p);
         } else {
@@ -313,10 +307,69 @@ public class KDFC_ART {
         size++;
     }
 
-    public void testLimBalKDFC_Effectiveness(FaultZone fzb, int[] backNum, long seed) {// LimBalKDFC���Ч������
-        Random generator = new Random(seed);
+    public void testNaiveKDFC_Effectiveness(FaultZone fzb) { // NaiveKDFC Testing effectiveness
+        Point p = Point.generateRandP(inputDomain); // Randomly produce a test case
+        this.insertPointByTurn(p);
+        if (fzb.findTarget(p)) {
+            return;
+        }
+        Point finalCase;
+        ArrayList<Point> canD;
+        while (true) {
+            canD = new ArrayList<>(); // Test case candidate set
+            for (int i = 0; i < candidateNum; i++) {
+                canD.add(Point.generateRandP(inputDomain));
+            }
+            finalCase = canD.get(0);
+            double distance = this.getMinDisByALL(finalCase);
+            for (int c = 1; c < candidateNum; c++) {
+                double d = this.getMinDisByALL(canD.get(c)); // Get the minimum distance
+                if (distance < d) { //Get the candidate for the smallest distance
+                    distance = d;
+                    finalCase = canD.get(c);
+                }
+            }
+            this.insertPointByTurn(finalCase);
+            if (fzb.findTarget(finalCase)) {
+                break;
+            }
 
-        Point p = Point.generateRandP(inputDomain, generator); // �������һ������
+        }
+    }
+
+    public void testSemiBalKDFC_Effectiveness(FaultZone fzb) { // SemiBalKDFC���Ч������
+        Point p = Point.generateRandP(inputDomain); // �������һ������
+        this.insertPointByStrategy(p);
+        if (fzb.findTarget(p)) {
+            return;
+        }
+        Point finalCase;
+        ArrayList<Point> canD;
+        while (true) {
+            canD = new ArrayList<>(); // ����������ѡ��
+            for (int i = 0; i < candidateNum; i++) {
+                canD.add(Point.generateRandP(inputDomain));
+            }
+            finalCase = canD.get(0);
+            double distance = this.getMinDisByALL(finalCase);
+            for (int c = 1; c < candidateNum; c++) {
+                double d = this.getMinDisByALL(canD.get(c)); // �����С����
+                if (distance < d) { // �����С���������Ǹ���ѡ��
+                    distance = d;
+                    finalCase = canD.get(c);
+                }
+            }
+            this.insertPointByStrategy(finalCase);
+            if (fzb.findTarget(finalCase)) {
+                break;
+            }
+
+        }
+    }
+
+    public void testLimBalKDFC_Effectiveness(FaultZone fzb, int[] backNum) {// LimBalKDFC���Ч������
+
+        Point p = Point.generateRandP(inputDomain); // �������һ������
         this.insertPointByStrategy(p);
         if (fzb.findTarget(p)) {
             return;
@@ -326,7 +379,7 @@ public class KDFC_ART {
         while (true) {
             canD = new ArrayList<>(); // candidate test case set
             for (int i = 0; i < candidateNum; i++) {
-                canD.add(Point.generateRandP(inputDomain, generator));
+                canD.add(Point.generateRandP(inputDomain));
             }
             finalCase = canD.get(0);
             int back = backNum[this.size];
@@ -345,6 +398,80 @@ public class KDFC_ART {
         }
     }
 
+    public void testNaiveKDFC_Efficiency(int pointNum) throws IOException { // NaiveKDFC����Ч�ʲ���
+
+        Point p = Point.generateRandP(inputDomain); // �������һ������
+        this.insertPointByTurn(p);
+        Point finalCase;
+        ArrayList<Point> canD;
+        for (int i = 1; i < pointNum; i++) {
+            canD = new ArrayList<>(); // ����������ѡ��
+            for (int j = 0; j < candidateNum; j++) {
+                canD.add(Point.generateRandP(inputDomain));
+            }
+            finalCase = canD.get(0);
+            double distance = this.getMinDisByALL(finalCase);
+            for (int c = 1; c < candidateNum; c++) {
+                double d = this.getMinDisByALL(canD.get(c)); // �����С����
+                if (distance < d) { // �����С���������Ǹ���ѡ��
+                    distance = d;
+                    finalCase = canD.get(c);
+                }
+            }
+            this.insertPointByTurn(finalCase);
+        }
+    }
+
+    public void testSemiBalKDFC_Efficiency(int pointNum) throws IOException { // SemiBalKDFC����Ч�ʲ���
+
+        Point p = Point.generateRandP(inputDomain); // �������һ������
+        this.insertPointByStrategy(p);
+        Point finalCase;
+        ArrayList<Point> canD;
+        for (int i = 1; i < pointNum; i++) {
+            canD = new ArrayList<>(); // ����������ѡ��
+            for (int j = 0; j < candidateNum; j++) {
+                canD.add(Point.generateRandP(inputDomain));
+            }
+            finalCase = canD.get(0);
+            double distance = this.getMinDisByALL(finalCase);
+            for (int c = 1; c < candidateNum; c++) {
+                double d = this.getMinDisByALL(canD.get(c)); // �����С����
+                if (distance < d) { // �����С���������Ǹ���ѡ��
+                    distance = d;
+                    finalCase = canD.get(c);
+                }
+            }
+            this.insertPointByStrategy(finalCase);
+        }
+    }
+
+    public void testLimBalKDFC_Efficiency(int pointNum, int[] backNum) throws IOException { // LimBalKDFC Computational Efficiency Test
+        Point p = Point.generateRandP(inputDomain); //Randomly generate a use case
+        this.insertPointByStrategy(p);
+        Point finalCase;
+        ArrayList<Point> canD;
+        for (int i = 1; i < pointNum; i++) {
+            canD = new ArrayList<>(); //  Test case candidate set
+            for (int j = 0; j < candidateNum; j++) {
+                canD.add(Point.generateRandP(inputDomain));
+            }
+            finalCase = canD.get(0);
+            int back = backNum[this.size];
+            double distance = this.getMinDisByBacktracking(finalCase, back);
+            for (int c = 1; c < candidateNum; c++) {
+                double d = this.getMinDisByBacktracking(canD.get(c), back); // Get the minimum distance
+                if (distance < d) { // Get the candidate for the smallest distance
+                    distance = d;
+                    finalCase = canD.get(c);
+                }
+            }
+            this.insertPointByStrategy(finalCase);
+            // System.out.println(finalCase.coordPoint[0]+"\t");
+
+
+        }
+    }
 
     public int spiltSelect(float[][] boundary, Point p) { // ����ƽ����� ѡ����ѷָ�ά��
         double rate = 0;
@@ -361,5 +488,35 @@ public class KDFC_ART {
         }
         return spilt;
     }
+
+	public int testLimBalKDFC_Discrepancy(FaultZone fzb, int testCases, int[] backNum) { // ʧЧ���Ч������
+		int counter = 0; // number of test cases in sub-domain region
+		Point p = Point.generateRandP(inputDomain); //Randomly generate a use case
+		this.insertPointByStrategy(p);
+		Point finalCase;
+		ArrayList<Point> canD;
+
+		for (int i = 1; i < testCases; i++) { // �������n����ѡ�Ĳ�������
+			canD = new ArrayList<>(); //  Test case candidate set
+			for (int j = 0; j < candidateNum; j++) {
+				canD.add(Point.generateRandP(inputDomain));
+			}
+			finalCase = canD.get(0);
+			int back = backNum[this.size];
+			double distance = this.getMinDisByBacktracking(finalCase, back);
+			for (int c = 1; c < candidateNum; c++) {
+				double d = this.getMinDisByBacktracking(canD.get(c), back); // Get the minimum distance
+				if (distance < d) { // Get the candidate for the smallest distance
+					distance = d;
+					finalCase = canD.get(c);
+				}
+			}
+			this.insertPointByStrategy(finalCase);
+			if (fzb.findTarget(finalCase)) {
+				counter++;
+			}
+		}
+		return counter;
+	}
 
 }

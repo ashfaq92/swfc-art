@@ -1,7 +1,6 @@
 package com.github.jelmerk.knn.examples.auxiliary.model;
 
 import com.github.jelmerk.knn.Item;
-import com.sun.istack.internal.Nullable;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -51,46 +50,15 @@ public class Point implements Item<Integer, double[]> {
 
     }
 
-    public static Point generateRandP(int[][] inputDomain, Random generator) { //  Randomly generate a test case from a given space
-        // generate random point within input domain INCLUSIVE
+    public static Point generateRandP(int[][] inputDomain) { //  Randomly generate a test case from a given space
         int n = inputDomain.length;
         Point newPoint = new Point(n);
         for (int i = 0; i < n; i++) {
             // newPoint.coordPoint[i] = (float) (inputDomain[i][0] + (inputDomain[i][1] - inputDomain[i][0]) * Math.random());
-            // newPoint.coordPoint[i] = (float) (inputDomain[i][0] + (Math.random() * ((inputDomain[i][1] - inputDomain[i][0]) + 1)) );
-            // newPoint.coordPoint[i] = inputDomain[i][0] + (generator.nextFloat() * ((inputDomain[i][1] - inputDomain[i][0]) + 1)) ;
-            newPoint.coordPoint[i] = inputDomain[i][0] + generator.nextFloat() * (inputDomain[i][1] - inputDomain[i][0]);
+            newPoint.coordPoint[i] = (float) (inputDomain[i][0] + (Math.random() * ((inputDomain[i][1] - inputDomain[i][0]) + 1)) );
             newPoint.vector[i] = newPoint.coordPoint[i];
-
         }
         return newPoint;
-    }
-    public static Point generateRandP(double[][] inputDomain, Random generator) { //  Randomly generate a test case from a given space
-        // generate random point within input domain INCLUSIVE
-        int n = inputDomain.length;
-        Point newPoint = new Point(n);
-        for (int i = 0; i < n; i++) {
-            // newPoint.coordPoint[i] = (float) (inputDomain[i][0] + (inputDomain[i][1] - inputDomain[i][0]) * Math.random());
-            // newPoint.coordPoint[i] = (float) (inputDomain[i][0] + (Math.random() * ((inputDomain[i][1] - inputDomain[i][0]) + 1)) );
-            newPoint.coordPoint[i] = (float) (inputDomain[i][0] + (generator.nextFloat() * ((inputDomain[i][1] - inputDomain[i][0]) + 1)));
-            newPoint.vector[i] = newPoint.coordPoint[i];
-
-        }
-        return newPoint;
-    }
-    private static boolean isValid(Point tc) {
-        // Just for Binomial Program
-        // must have n >= k for binomial coefficient (n,k)
-        return tc.coordPoint[0] >= tc.coordPoint[1];
-    }
-    public static Point generateValidRandP(double[][] inputDomain, Random generator) {
-        while (true) {
-            Point tc = generateRandP(inputDomain, generator);
-            if (isValid(tc)) {
-                return tc;
-            }
-        }
-
     }
 
 

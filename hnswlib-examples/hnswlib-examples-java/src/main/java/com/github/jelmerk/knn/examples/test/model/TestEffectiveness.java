@@ -8,10 +8,7 @@ import com.github.jelmerk.knn.examples.fscs.art.FSCS_ART;
 import com.github.jelmerk.knn.examples.hnsw.art.HNSW_ART;
 import com.github.jelmerk.knn.examples.kdfc.art.KDFC_ART;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -57,11 +54,12 @@ public class TestEffectiveness {
         for (int[][] bd : domains) {
             System.out.println("\n------DIMENSION:\t" + bd.length + "D--------:");
             for (float a : area) {
-                System.out.println(bd.length + "D\t" + a);
+                System.out.println("Dimensionality:" + bd.length + "\t" + "theta:" + a);
+                System.out.println("FSCS-ART | Limbal-KDFC | SWFC-ART");
                 String s1 = bd.length + "d-Block-" + a + ".txt";
                 String s2 = bd.length + "d-Strip-" + a + ".txt";
                 String s3 = bd.length + "d-Point-" + a + ".txt";
-                // fixRateTest("E:/temp/" + s1, a, bd, 1);
+                fixRateTest("E:/temp/" + s1, a, bd, 1);
                 fixRateTest("E:/temp/" + s2, a, bd, 2);
                 fixRateTest("E:/temp/" + s3, a, bd, 3);
             }
@@ -89,18 +87,11 @@ public class TestEffectiveness {
     public static void fixRateTest(String file, float area, int[][] bd, int t) throws IOException, InterruptedException, URISyntaxException {
         FSCS_ART fscs;
         KDFC_ART kdfc;
-        HNSW_ART hnsw2;
+        HNSW_ART hnsw;
         FaultZone fzb;
         File f1 = new File(file);
-
-        PrintWriter out;
-
-        if (f1.exists() && !f1.isDirectory()) {
-            out = new PrintWriter(new FileOutputStream(new File(file), true));
-            System.out.println("File already exists. appending");
-        } else {
-            out = new PrintWriter(file);
-        }
+        f1.createNewFile();
+        PrintWriter out = new PrintWriter(new FileWriter(f1));
 
 
         int[] backNum = new int[100 * (int) (1 / area)];
@@ -110,9 +101,11 @@ public class TestEffectiveness {
         for (int i = 2; i < backNum.length; i++) {
             backNum[i] = (int) Math.ceil(1 / 2.0 * Math.pow((d + 1 / d), 2) * (Math.log(i) / Math.log(2)));
         }
-        double num1 = 0, num2 = 0, num3 = 0, num4 = 0;
-        int i = 0;
-        while (i < 150) {
+
+
+        double num1 = 0, num2 = 0, num3 = 0;
+
+        for (int i = 0; i < 1000; i++) {
             if (t == 1) {
                 fzb = new FaultZone_Block(bd, area);
             } else if (t == 2) {
@@ -120,43 +113,35 @@ public class TestEffectiveness {
             } else {
                 fzb = new FaultZone_Point_Square(bd, area);
             }
-            long seed = new Random().nextLong();
+            for (int j = 0; j < 10; j++) {
 
-            fscs = new FSCS_ART(10);
-            int num = fscs.testFscsArt_Effectiveness(bd, fzb, seed);
-            num1 = num1 + num;
-            out.print(num + "\t");
+                fscs = new FSCS_ART(10);
+                int num = fscs.testFscsArt_Effectiveness(bd, fzb);
+                num1 = num1 + num;
+                out.print(num + "\t");
 
+                kdfc = new KDFC_ART(bd);
+                kdfc.testLimBalKDFC_Effectiveness(fzb, backNum);
+                num2 = num2 + kdfc.size;
+                out.print(kdfc.size + "\t");
 
-            kdfc = new KDFC_ART(bd);
-            kdfc.testLimBalKDFC_Effectiveness(fzb, backNum, seed);
-            num2 = num2 + kdfc.size;
-            out.print(kdfc.size + "\t");
-
-            hnsw2 = new HNSW_ART(10);
-            int hnsw2_num = hnsw2.testHnswArt_Effectiveness(bd, fzb, 2, seed);
-            num4 = num4 + hnsw2_num;
-            out.print(hnsw2_num + "\t");
-            out.println();
-
-            out.flush();
-            long numberOfLines = count_lines_text_java8(file);
-            if (numberOfLines >= 150) {
-                break;
+                hnsw = new HNSW_ART(10);
+                int hnsw2_num = hnsw.testHnswArt_Effectiveness(bd, fzb, 2);
+                num3 = num3 + hnsw2_num;
+                out.print(hnsw2_num + "\t");
+                out.println();
+                out.flush();
             }
-            i++;
         }
 
         double n = 5000.0;
         double s = 1 / area / 100;
         out.println(new DecimalFormat("0.0000").format(num1 / n / s) + "\t"
                 + new DecimalFormat("0.0000").format(num2 / n / s) + "\t"
-                + new DecimalFormat("0.0000").format(num3 / n / s) + "\t"
-                + new DecimalFormat("0.0000").format(num4 / n / s));
+                + new DecimalFormat("0.0000").format(num3 / n / s));
         System.out.println(new DecimalFormat("0.0000").format(num1 / n / s) + "\t"
                 + new DecimalFormat("0.0000").format(num2 / n / s) + "\t"
-                + new DecimalFormat("0.0000").format(num3 / n / s) + "\t"
-                + new DecimalFormat("0.0000").format(num4 / n / s));
+                + new DecimalFormat("0.0000").format(num3 / n / s));
         out.close();
 
     }

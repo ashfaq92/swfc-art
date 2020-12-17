@@ -1,7 +1,0 @@
-{
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "files.associations": {
-        "ios": "c",
-        "xutility": "c"
-    }
-}
