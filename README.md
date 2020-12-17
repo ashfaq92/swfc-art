@@ -13,7 +13,7 @@ HNSW-Java: https://github.com/jelmerk/hnswlib
 ## Guidelines
 
 To reproduce the results, Please refer to:
-hnswlib-examples => hnswlib-examples-java => src => main => java => com.github.jelmerk.knn.examples => test.model Note:
+hnswlib-examples => hnswlib-examples-java => src => main => java => com.github.jelmerk.knn.examples => test.model 
 
 Make sure to satisfy all maven dependencies for proper execution of the project
 
