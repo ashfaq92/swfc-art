@@ -4,7 +4,7 @@ For academic demonstration. Full description alongwith references will be provid
 
 ## Credits
 
-This project uses some code from following repositories:
+This project is made possible by the:
 
 KDFC-ART: https://github.com/maochy/kdfc-art
 
