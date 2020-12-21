@@ -1,6 +1,6 @@
 # SWFC-ART
 
-For academic demonstration. Full description alongwith references will be provided soon.
+For academic demonstration. Full description will be provided soon.
 
 ## Credits
 
