@@ -3,7 +3,17 @@
 Source code of our paper: 
 SWFC-ART: A Cost-effective Approach for Fixed-Size-Candidate-Set Adaptive Random Testing through Small World Graphs
 
-[Details](https://www.researchgate.net/publication/351514150_SWFC-ART_A_Cost-effective_Approach_for_Fixed-Size-Candidate-Set_Adaptive_Random_Testing_through_Small_World_Graphs) 
+Abstract:
+Adaptive random testing (ART) improves the failure-detection effectiveness of random testing by leveraging properties of the clustering of failure-causing inputs of most faulty programs: ART uses a sampling mechanism that evenly spreads test cases within a software's input domain.
+The widely-used Fixed-Sized-Candidate-Set ART (FSCS-ART) sampling strategy faces a quadratic time cost, which worsens as the dimensionality of the software input domain increases.
+In this paper, we propose an approach based on small world graphs that can enhance the computational efficiency of FSCS-ART:
+SWFC-ART.
+To efficiently perform nearest neighbor queries for candidate test cases, SWFC-ART incrementally constructs a hierarchical navigable small world graph for previously executed, non-failure-causing test cases.
+Moreover,  SWFC-ART has shown consistency in programs with high dimensional input domains.
+Our simulation and empirical studies show that SWFC-ART reduces the computational overhead of FSCS-ART from quadratic to log-linear order while maintaining the failure-detection effectiveness of FSCS-ART, and remaining consistent in high dimensional input domains.
+We recommend using SWFC-ART in practical software testing scenarios, where real-life programs often have high dimensional input domains and  low failure rates.
+
+[Click here for Details](https://www.researchgate.net/publication/351514150_SWFC-ART_A_Cost-effective_Approach_for_Fixed-Size-Candidate-Set_Adaptive_Random_Testing_through_Small_World_Graphs) 
 
 
 
