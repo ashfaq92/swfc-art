@@ -1,6 +1,11 @@
 # SWFC-ART
 
-For academic demonstration. Full description will be provided soon.
+Source code of our paper: 
+SWFC-ART: A Cost-effective Approach for Fixed-Size-Candidate-Set Adaptive Random Testing through Small World Graphs
+
+[Details](https://www.researchgate.net/publication/351514150_SWFC-ART_A_Cost-effective_Approach_for_Fixed-Size-Candidate-Set_Adaptive_Random_Testing_through_Small_World_Graphs) 
+
+
 
 ## Credits
 
